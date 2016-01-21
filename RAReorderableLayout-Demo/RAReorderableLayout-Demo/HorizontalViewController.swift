@@ -12,6 +12,8 @@ class HorizontalViewController: UIViewController, RAReorderableLayoutDelegate, R
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var gradientView: UIView!
+    @IBOutlet weak var dropArea: UIView!
+    
     private var gradientLayer: CAGradientLayer?
     private var books: [Book] = []
     
@@ -42,6 +44,7 @@ class HorizontalViewController: UIViewController, RAReorderableLayoutDelegate, R
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.collectionView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0)
+        (self.collectionView.collectionViewLayout as! RAReorderableLayout).dropFrame = self.dropArea.frame
         self.gradientLayer?.frame = self.gradientView.bounds
     }
     
@@ -95,6 +98,10 @@ class HorizontalViewController: UIViewController, RAReorderableLayoutDelegate, R
     
     func scrollSpeedValueInCollectionView(collectionView: UICollectionView) -> CGFloat {
         return 15.0
+    }
+
+    func collectionView(collectionView: UICollectionView, collectionViewLayout layout: RAReorderableLayout, willDeleteItemAtIndexPath indexPath: NSIndexPath) {
+        self.books.removeAtIndex(indexPath.item)
     }
 }
 
